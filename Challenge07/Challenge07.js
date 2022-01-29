@@ -84,19 +84,25 @@ const objLat = (obj) => {
 //  2- If one of the names is null dont add it to the full name
 
 // ------------------------
-const cvFormatter = (arr) => {
-    
-    for(let  i=0;i<arr.length;i++){
-    
-    if (arr[i].yearsOfExperience> 1 && typeof arr[i].LastName =="string"){
-     
-        arr[i]={"fullName": arr[i].firstName+" "+arr[i].lastName , "tech":arr[i].tech} ;
-        
-        
 
-    }
-    }
-    return arr[i]={"fullName": arr[i].firstName+" "+arr[i].lastName , "tech":arr[i].tech};
+
+    const cvFormatter = (arr) => {
+        // write your code here
+
+        let newArr = [];
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].yearsOfExperience > 1) {
+            newArr.push({
+              fullName: arr[i].lastName != null && arr[i].firstName != null ? `${arr[i].firstName} ${arr[i].lastName}`  : arr[i].firstName == null
+                  ? `${arr[i].lastName}`  : `${arr[i].firstName}`, tech: `${arr[i].tech}`, });
+
+          }
+        }
+        return newArr;
+    
+
+    
+    
 };
 
 
@@ -121,9 +127,31 @@ const cvFormatter = (arr) => {
 //  1- rejectedApplicants are applications that has both the names empty or null and whoever have one year or less of Experience
 
 // ------------------------
-function applicationsStatics(arr) {
+
+const applicationsStatics = (arr) => {
     // write your code here
-}
+    const result = {
+      python_Devs: 0,
+      javaScript_Devs: 0,
+      dotNet_Devs: 0,
+      java_Devs: 0,
+      totalApplicants: arr.length,
+      rejectedApplicants: 0,
+    };
+    arr.forEach((applicant) => {
+      if (applicant.tech === "Java") result.java_Devs++;
+      if (applicant.tech === "JS") result.javaScript_Devs++;
+      if (applicant.tech === ".Net") result.dotNet_Devs++;
+      if (applicant.tech === "Python") result.python_Devs++;
+      if (applicant.firstName === null && applicant.lastName === null)
+        result.rejectedApplicants++;
+      if (applicant.firstName === "" && applicant.lastName === "")
+        result.rejectedApplicants++;
+      if (applicant.yearsOfExperience <= 1) result.rejectedApplicants++;
+    });
+    return result;
+  };
+
 
 // 4) ---------------------
 //
@@ -246,14 +274,23 @@ let data = {
 //  1- This is not the exact data you will be getting every time and the solution should be dynamic
 //  2- You need to round the average to the nearest lower number 
 const average = arr => arr.reduce((a,b) => a + b, 0) / arr.length;
+
 const classesAvg = (data) => {
-    
-    for(let i=0;i<classesAvg.length;i++){
-        data.grades[i].classes[i].avg =average(data.grades[i].classes[i].classScores).toFixed(2);
-
-
+    // write your code here
+    for (let i = 0; i < data.grades.length; i++) {
+      for (let j = 0; j < data.grades[i].classes.length; j++) {
+        let sum = 0;
+        for (let z = 0; z < data.grades[i].classes[j].classScores.length; z++) {
+          sum = sum + data.grades[i].classes[j].classScores[z];
+        }
+        data.grades[i].classes[j].avg = Math.floor(
+          sum / data.grades[i].classes[j].classScores.length,
+        );
+      }
     }
-    return data.grades[i].classes[i].avg;
-};
+    return data;
+  };
+    
+
 
 module.exports = { objLat, cvFormatter, applicationsStatics, classesAvg };
