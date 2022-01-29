@@ -27,7 +27,19 @@
 // -------------------------------------------------------------------------------------------------------
 
 const customerAndAge = (obj) => {
-  // write your code here
+
+
+  let newObj = [];
+
+  Object.entries(obj).forEach((entry) => {
+    let  ans = `Customer Name :${entry[0]} , Age :${entry[1]}`;
+
+    newObj.push(ans);
+
+  });
+  return newObj;
+
+
 };
 
 // -------------------------------------------------------------------------------------------------------
@@ -54,10 +66,16 @@ const customerAndAge = (obj) => {
 // -------------------------------------------------------------------------------------------------------
 
 const getEntries = (obj) => {
-let arr=[];
-    arr=[String(obj)];
-    return arr;
-  // write your code here
+
+  let getRec = [];
+
+  Object.entries(obj).forEach((entry) => {
+    const ans = `${entry[0]}: ${
+      typeof entry[1] === "object" ? entry[1].join(",") : entry[1]
+    }`;
+    getRec.push(ans);
+  });
+  return getRec;
 };
 
 // -------------------------------------------------------------------------------------------------------
@@ -98,8 +116,14 @@ const courses = [
 const getInfo = (arr) => {
   let coursesName = [];
   let studentsName = [];
-  // write your code here
 
+    for (const property of arr){
+        coursesName.push(property.course);
+        for (let i=0; i<property.Students.length; i++){
+            studentsName.push(property.Students[i]);
+        }
+    }
+ 
   return { coursesName, studentsName };
 };
 
@@ -124,9 +148,19 @@ const getInfo = (arr) => {
 const getStudents = (arr) => {
 
     
-  // write your code here
-
+  let result = [];
+  for (const x of arr) {
+    for (const obj of courses) {
+      for (const element of obj.Students) {
+        if (x == element) {
+          result.push({ Student: x, course: obj.course });
+        }
+      }
+    }
+  }
+  return result;
 };
+
 
 module.exports = {
   customerAndAge,
